@@ -1,0 +1,1139 @@
+Found a 36 line (266 tokens) duplication in the following files: 
+Starting at line 20 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\util\S3Reader.java
+Starting at line 22 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\util\S3ReaderPartition.java
+
+	private static AmazonS3Client s3client = new AmazonS3Client();
+	static AWSUtil awsUtil = new AWSUtil();
+	public static void main(String[] args) throws IOException {
+		Set<String> s3feed = fileListFrmS3(bucketName,sourcePath);
+		System.out.println(" size " + s3feed.size());
+	}
+	public static Set<String> fileListFrmS3(String bucketName, String sourcePath) throws IOException{
+		Set<String> s3Records = new HashSet<String>();
+		 try {
+	           // System.out.println("Listing objects");
+	            ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName(bucketName).withPrefix(sourcePath);
+	            ObjectListing objectListing;       
+	            do {
+	                objectListing = s3client.listObjects(listObjectsRequest);
+	                for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+	                	//System.out.println(" - " + objectSummary.getKey());
+	                	s3Records =	readFromS3(bucketName, objectSummary.getKey());
+	        			}
+	                } while (objectListing.isTruncated());
+	        } catch (AmazonClientException ace) {
+	            System.out.println("Error Message: " + ace.getMessage());
+	        }
+		return s3Records;
+	}
+	
+	public static Set<String> readFromS3(String bucketName, String key) throws IOException {
+		Set<String> s3Records = new HashSet<String>();
+	    S3Object s3object = s3client.getObject(new GetObjectRequest(bucketName, key));
+	    //System.out.println(s3object.getObjectMetadata().getContentType());
+	   // System.out.println(s3object.getObjectMetadata().getContentLength());
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(s3object.getObjectContent()));
+	    String line;
+	    while((line = reader.readLine()) != null) {
+	      // can copy the content locally as well
+	      // using a buffered writer
+	    	if(line.length() > 0) {
+=====================================================================
+Found a 10 line (203 tokens) duplication in the following files: 
+Starting at line 124 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 115 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+					for(int artist =0; artist<track.getArtists().size(); artist++){
+						outFile.write(c.getCountry()+"\t");
+						outFile.write(c.getDate()+"\t");
+						outFile.write(c.getType()+"\t");
+						outFile.write(c.getEntries().getItems().get(t).getCurrentPosition()+"\t");
+						outFile.write(c.getEntries().getItems().get(t).getPrevious_position()+"\t");
+						outFile.write(c.getEntries().getItems().get(t).getPlays()+"\t");
+						outFile.write(c.getEntries().getItems().get(t).getName()+"\t");
+						outFile.write(c.getEntries().getItems().get(t).getId()+"\t");
+						outFile.write(track.getExternalIds().getExternalIds().get("isrc")+"\t");
+=====================================================================
+Found a 27 line (131 tokens) duplication in the following files: 
+Starting at line 51 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlayListDetails.java
+Starting at line 59 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+	            	 }else if(responseCode >= 400 || responseCode >= 500 || responseCode <= 500){
+	            		 if(responseCode == 404 || responseCode == 500){
+	            			  nextPage = false;
+	            		  }else if(responseCode == 429){
+	            			  	Thread.sleep(7000);
+	            			  	nextPage = false;
+	            			  	httpGet.setURI(httpGet.getURI());
+	            		  }else if(responseCode == 401){
+	            			  cred = HttpService.getAccessToken();
+	            			  cred.setAccessToken(cred.getAccessToken());
+		            		  nextPage = true;
+		            		  httpGet.setURI(httpGet.getURI());
+	            		  }else{nextPage = false;}
+	            		 
+	            	 }
+				}while(nextPage);
+				
+			}catch(Exception e ){
+				//System.out.println(" >> playlist Details Catch block " + e +">>>> "+playlistData);
+				e.printStackTrace();
+			}
+			j++;
+		}
+		
+	}
+
+	private static void writePlaylistFormattedData(Playlist playList,File filepath,String date) throws IOException {
+=====================================================================
+Found a 35 line (100 tokens) duplication in the following files: 
+Starting at line 30 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 33 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  }
+
+  public ExternalUrls getExternalUrls() {
+    return externalUrls;
+  }
+
+  public void setExternalUrls(ExternalUrls externalUrls) {
+    this.externalUrls = externalUrls;
+  }
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public List<Image> getImages() {
+    return images;
+  }
+
+  public void setImages(List<Image> images) {
+    this.images = images;
+  }
+
+  public String getName() {
+=====================================================================
+Found a 33 line (93 tokens) duplication in the following files: 
+Starting at line 11 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 79 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+  public ExternalUrls getExternalUrls() {
+    return externalUrls;
+  }
+
+  public void setExternalUrls(ExternalUrls externalUrls) {
+    this.externalUrls = externalUrls;
+  }
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public SpotifyEntityType getType() {
+=====================================================================
+Found a 11 line (91 tokens) duplication in the following files: 
+Starting at line 37 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlayListDetails.java
+Starting at line 37 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+			System.out.println(" >> Playlist Details Record Count " + j);
+			try{
+				URI uri = new URI(purl);
+	            HttpGet httpGet = new HttpGet(uri); 
+	            boolean nextPage = false;
+				do{
+					response =	HttpService.getHttpResponse(cred.getAccessToken(), httpGet.getURI().toString());
+					responseCode = response.getStatusLine().getStatusCode();
+	            	 System.out.println(" responseCode >> " + responseCode);
+	            	 if(responseCode == HttpStatus.SC_OK){
+	            		 	stringResponse = EntityUtils.toString(response.getEntity());
+=====================================================================
+Found a 12 line (86 tokens) duplication in the following files: 
+Starting at line 77 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 103 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\util\FileUtil.java
+
+	private static String getPartitionPath(final String dateString,final String baseOutputPath) {
+		String pattenString = DEFAULT_DATE_PATTERN;
+		System.out.println("pattenString: " + pattenString);
+		Pattern pattern = Pattern.compile(pattenString);
+		Matcher matcher = pattern.matcher(dateString);
+		String partitionSeperator = null;
+		if (matcher.find()) {
+			partitionSeperator = baseOutputPath
+					+ "/year="+ matcher.group(1) 
+					+ "/month=" + matcher.group(2) 
+					+ "/day=" + matcher.group(3) 
+					+"/";
+=====================================================================
+Found a 8 line (82 tokens) duplication in the following files: 
+Starting at line 105 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 100 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+		}
+
+	private static void getTrackDetails(Charts c,File path) throws IOException  {
+			FileWriter outFile = new FileWriter(path,true);
+			Track track = new Track();
+			for(int t=0; t < c.getEntries().getItems().size(); t++){
+				try {
+					String tURL = "http://api.spotify.com/v1/tracks/"+c.getEntries().getItems().get(t).getId();
+=====================================================================
+Found a 27 line (77 tokens) duplication in the following files: 
+Starting at line 53 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 38 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 41 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  }
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public List<Image> getImages() {
+    return images;
+  }
+
+  public void setImages(List<Image> images) {
+    this.images = images;
+  }
+
+  public User getOwner() {
+=====================================================================
+Found a 12 line (74 tokens) duplication in the following files: 
+Starting at line 23 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlayListDetails.java
+Starting at line 27 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+	public static void getPlayListDetails(Set<String> jsonData,ClientCredentials credentials,File fileNamea,String date) throws InterruptedException{
+		
+		HttpResponse response;
+		int responseCode;
+		String stringResponse;
+		cred.setAccessToken(credentials.getAccessToken());
+		
+		int j=1;
+		for(String playlistData : jsonData){
+			
+			String[] input = playlistData.split(":");
+			String purl = "https://api.spotify.com/v1/users/"+input[2]+"/playlists/"+input[4];
+=====================================================================
+Found a 27 line (71 tokens) duplication in the following files: 
+Starting at line 30 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 26 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 77 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+Starting at line 33 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  }
+
+  public ExternalUrls getExternalUrls() {
+    return externalUrls;
+  }
+
+  public void setExternalUrls(ExternalUrls externalUrls) {
+    this.externalUrls = externalUrls;
+  }
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public List<Image> getImages() {
+=====================================================================
+Found a 26 line (71 tokens) duplication in the following files: 
+Starting at line 62 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 33 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public SpotifyEntityType getType() {
+    return type;
+  }
+
+  public void setType(SpotifyEntityType type) {
+    this.type = type;
+  }
+
+  public String getUri() {
+    return uri;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
+}
+=====================================================================
+Found a 25 line (70 tokens) duplication in the following files: 
+Starting at line 85 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 62 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 33 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public SpotifyEntityType getType() {
+    return type;
+  }
+
+  public void setType(SpotifyEntityType type) {
+    this.type = type;
+  }
+
+  public String getUri() {
+    return uri;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
+=====================================================================
+Found a 25 line (70 tokens) duplication in the following files: 
+Starting at line 32 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 11 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 28 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 35 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  public ExternalUrls getExternalUrls() {
+    return externalUrls;
+  }
+
+  public void setExternalUrls(ExternalUrls externalUrls) {
+    this.externalUrls = externalUrls;
+  }
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public List<Image> getImages() {
+=====================================================================
+Found a 25 line (70 tokens) duplication in the following files: 
+Starting at line 19 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 12 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleCategory.java
+Starting at line 87 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public SpotifyEntityType getType() {
+=====================================================================
+Found a 8 line (68 tokens) duplication in the following files: 
+Starting at line 116 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+Starting at line 51 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlayListDetails.java
+Starting at line 59 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+		                }else if(responseCode >= 400 || responseCode >= 500 || responseCode <= 500){
+		                	if(responseCode == 404 || responseCode == 500){
+		            			  nextPage = false;
+		            		  }else if (responseCode == 429){
+		            			  Thread.sleep(7000);
+		            			  	nextPage = false;
+		            			  	httpGet.setURI(httpGet.getURI());
+		            		  }else if(responseCode == 401){
+=====================================================================
+Found a 11 line (60 tokens) duplication in the following files: 
+Starting at line 42 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 56 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+			final Set<String> s3Streaming = S3Reader.fileListFrmS3(args[0], args[4]);
+			System.out.println("Streaming Records size >> " + s3Streaming.size());
+			Set<String> set = new HashSet<String>() {
+				{
+					addAll(browseReadData);
+					addAll(s3Accounting);
+					addAll(s3Streaming);
+				}
+			};
+			System.out.println(" total Records Size >> " + set.size());
+			File playListFilePath = FileUtil.getLocalFilePath(PLAYLIST_FILE, dateString);
+=====================================================================
+Found a 3 line (54 tokens) duplication in the following files: 
+Starting at line 136 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 134 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+						outFile.write(track.getAlbum().getId()+"\t");
+						outFile.write(track.getAlbum().getName()+"\t");
+						outFile.write(track.getAlbum().getImages().get(0).getUrl());
+=====================================================================
+Found a 21 line (54 tokens) duplication in the following files: 
+Starting at line 3 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Followers.java
+Starting at line 3 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\PlaylistTracksInformation.java
+
+public class Followers {
+
+  private String href;
+  private int total;
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public int getTotal() {
+    return total;
+  }
+
+  public void setTotal(int total) {
+    this.total = total;
+  }
+}
+=====================================================================
+Found a 6 line (52 tokens) duplication in the following files: 
+Starting at line 116 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 108 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+					response = httpclient.execute(httpGet); 
+					int responseCode = response.getStatusLine().getStatusCode();
+					if(responseCode == HttpStatus.SC_OK){
+					String stringResponse = EntityUtils.toString(response.getEntity());
+					JSONObject jsonObject = JSONObject.fromObject(stringResponse);
+					track = JsonUtilHelper.createTrack(jsonObject);
+=====================================================================
+Found a 19 line (48 tokens) duplication in the following files: 
+Starting at line 53 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 17 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 34 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 85 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+  }
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public List<Image> getImages() {
+=====================================================================
+Found a 19 line (48 tokens) duplication in the following files: 
+Starting at line 77 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 50 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+
+  }
+
+  public User getOwner() {
+    return owner;
+  }
+
+  public void setOwner(User owner) {
+    this.owner = owner;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public SpotifyEntityType getType() {
+=====================================================================
+Found a 19 line (48 tokens) duplication in the following files: 
+Starting at line 93 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 82 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 73 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  }
+
+  public SpotifyEntityType getType() {
+    return type;
+  }
+
+  public void setType(SpotifyEntityType type) {
+    this.type = type;
+  }
+
+  public String getUri() {
+    return uri;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
+
+  public boolean isPublicAccess() {
+=====================================================================
+Found a 18 line (48 tokens) duplication in the following files: 
+Starting at line 70 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 41 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 133 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+  }
+
+  public SpotifyEntityType getType() {
+    return type;
+  }
+
+  public void setType(SpotifyEntityType type) {
+    this.type = type;
+  }
+
+  public String getUri() {
+    return uri;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
+}
+=====================================================================
+Found a 4 line (47 tokens) duplication in the following files: 
+Starting at line 125 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+Starting at line 129 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+					if (artist==0) {
+					outFile.write(track.getArtists().get(artist).getName()+"\t");
+					outFile.write(track.getArtists().get(artist).getId()+"\t");
+					outFile.write("Y"+"\t");
+=====================================================================
+Found a 13 line (47 tokens) duplication in the following files: 
+Starting at line 57 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\EntriesTracks.java
+Starting at line 25 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 17 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleCategory.java
+Starting at line 93 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+=====================================================================
+Found a 17 line (47 tokens) duplication in the following files: 
+Starting at line 55 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 40 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 12 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleCategory.java
+Starting at line 36 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 43 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public List<Image> getImages() {
+=====================================================================
+Found a 17 line (47 tokens) duplication in the following files: 
+Starting at line 93 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 133 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+  }
+
+  public SpotifyEntityType getType() {
+    return type;
+  }
+
+  public void setType(SpotifyEntityType type) {
+    this.type = type;
+  }
+
+  public String getUri() {
+    return uri;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
+=====================================================================
+Found a 17 line (47 tokens) duplication in the following files: 
+Starting at line 70 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 41 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 82 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 73 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  }
+
+  public SpotifyEntityType getType() {
+    return type;
+  }
+
+  public void setType(SpotifyEntityType type) {
+    this.type = type;
+  }
+
+  public String getUri() {
+    return uri;
+  }
+
+  public void setUri(String uri) {
+    this.uri = uri;
+  }
+=====================================================================
+Found a 3 line (46 tokens) duplication in the following files: 
+Starting at line 134 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 126 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+Starting at line 130 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+						outFile.write(track.getArtists().get(artist).getName()+"\t");
+						outFile.write(track.getArtists().get(artist).getId()+"\t");
+						outFile.write(track.getAlbum().getId()+"\t");
+=====================================================================
+Found a 5 line (39 tokens) duplication in the following files: 
+Starting at line 90 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 113 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+
+			URI uri = new URI("http://spotifycharts.com/api/?type=regional");
+			httpclient = HttpClientBuilder.create().build();  
+			httpGet = new HttpGet(uri);   
+			response = httpclient.execute(httpGet); 
+			int responseCode = response.getStatusLine().getStatusCode();
+=====================================================================
+Found a 5 line (37 tokens) duplication in the following files: 
+Starting at line 68 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 89 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+				response = httpclient.execute(httpGet);
+				int responseCode = response.getStatusLine().getStatusCode();
+				String stringResponse = EntityUtils.toString(response.getEntity());
+				System.out.println("stringResponse" + responseCode);
+				Charts C = JsonUtilHelper.createCharts(stringResponse);
+=====================================================================
+Found a 4 line (36 tokens) duplication in the following files: 
+Starting at line 54 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 68 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+Starting at line 47 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+
+			String trackFileName = FileUtil.getFileNameFromFilePath(playListFilePath.getAbsolutePath());
+			String GzipFile = GzipUtil.compressGzipFile(trackFileName);
+			String GzipFileName = FileUtil.getFileNameFromFilePath(GzipFile);
+			String s3OutPutPath = FileUtil.getS3OutputPath(GzipFileName, dateString, args[5]);
+=====================================================================
+Found a 4 line (35 tokens) duplication in the following files: 
+Starting at line 116 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 72 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+Starting at line 108 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+Starting at line 80 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\service\HttpService.java
+
+					response = httpclient.execute(httpGet); 
+					int responseCode = response.getStatusLine().getStatusCode();
+					if(responseCode == HttpStatus.SC_OK){
+					String stringResponse = EntityUtils.toString(response.getEntity());
+=====================================================================
+Found a 3 line (34 tokens) duplication in the following files: 
+Starting at line 38 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 52 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+			final Set<String> browseReadData = S3ReaderPartition.fileListFrmS3(args[6], browsePath);
+			System.out.println("Browse Records size >> " + browseReadData.size());
+			final Set<String> s3Accounting = S3Reader.fileListFrmS3(args[0], args[3]);
+=====================================================================
+Found a 3 line (34 tokens) duplication in the following files: 
+Starting at line 40 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 54 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+			final Set<String> s3Accounting = S3Reader.fileListFrmS3(args[0], args[3]);
+			System.out.println("Accounting Records size >> " + s3Accounting.size());
+			final Set<String> s3Streaming = S3Reader.fileListFrmS3(args[0], args[4]);
+=====================================================================
+Found a 5 line (34 tokens) duplication in the following files: 
+Starting at line 57 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 71 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+			String s3OutPutPath = FileUtil.getS3OutputPath(GzipFileName, dateString, args[5]);
+			System.out.println(" >> file uploading >> ");
+			awsUtil.uploadToS3AndWWaitForCompletion(args[6], s3OutPutPath, GzipFile);
+			System.out.println(" >> file uploading Ending >> ");
+		} catch (AmazonServiceException e) {
+=====================================================================
+Found a 2 line (33 tokens) duplication in the following files: 
+Starting at line 100 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 104 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+					outFile.write(ptrack.getItems().get(item).getTrack().getArtists().get(artist).getUri()+"\t");
+					outFile.write(ptrack.getItems().get(item).getTrack().getArtists().get(artist).getName()+"\t");
+=====================================================================
+Found a 9 line (31 tokens) duplication in the following files: 
+Starting at line 9 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\PageCharts.java
+Starting at line 9 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\PageCharts.java
+
+	private String total;
+	
+	public List<T> getItems() {
+		return items;
+	}
+	public void setItems(List<T> items) {
+		this.items = items;
+	}
+	public String getTotal() {
+=====================================================================
+Found a 9 line (31 tokens) duplication in the following files: 
+Starting at line 24 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Page.java
+Starting at line 11 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\PageCharts.java
+
+  public List<T> getItems() {
+    return items;
+  }
+
+  public void setItems(List<T> items) {
+    this.items = items;
+  }
+
+  public int getLimit() {
+=====================================================================
+Found a 5 line (30 tokens) duplication in the following files: 
+Starting at line 52 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+Starting at line 59 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsProcess.java
+
+				awsUtil.uploadToS3AndWWaitForCompletion(args[1], s3OutPutPath, GzipFile);
+				System.out.println(" >> file uploading Ending >> ");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{System.out.println(" finally block ");System.exit(0);}
+=====================================================================
+Found a 7 line (30 tokens) duplication in the following files: 
+Starting at line 11 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\PageCharts.java
+Starting at line 24 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Page.java
+
+	public List<T> getItems() {
+		return items;
+	}
+	public void setItems(List<T> items) {
+		this.items = items;
+	}
+	public String getTotal() {
+=====================================================================
+Found a 9 line (30 tokens) duplication in the following files: 
+Starting at line 69 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 54 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 98 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 57 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+  }
+
+  public List<Image> getImages() {
+    return images;
+  }
+
+  public void setImages(List<Image> images) {
+    this.images = images;
+  }
+=====================================================================
+Found a 9 line (30 tokens) duplication in the following files: 
+Starting at line 16 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 39 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+  public List<String> getAvailableMarkets() {
+    return availableMarkets;
+  }
+
+  public void setAvailableMarkets(List<String> availableMarkets) {
+    this.availableMarkets = availableMarkets;
+  }
+
+  public AlbumType getAlbumType() {
+=====================================================================
+Found a 11 line (29 tokens) duplication in the following files: 
+Starting at line 67 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 54 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\SpotifyChartsData.java
+
+		} catch (AmazonClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			System.out.println(" finally block ");
+			System.exit(0);
+		}
+		
+	}
+	
+	private static String getPartitionPath(final String dateString,final String baseOutputPath) {
+=====================================================================
+Found a 3 line (28 tokens) duplication in the following files: 
+Starting at line 152 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+Starting at line 154 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+	    outFile.write(categoryPlaylist.getPlaylists().getItems().get(item).getName()+"\t");
+	   // outFile.write(categoryPlaylist.getPlaylists().getItems().get(item).getType()+"\t");
+	    outFile.write(categoryPlaylist.getPlaylists().getItems().get(item).getOwner().getId()+"\t");
+=====================================================================
+Found a 2 line (28 tokens) duplication in the following files: 
+Starting at line 95 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 112 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+			outFile.write(ptrack.getItems().get(item).getTrack().getUri()+"\t");
+			outFile.write(ptrack.getItems().get(item).getTrack().getName()+"\t");
+=====================================================================
+Found a 1 line (28 tokens) duplication in the following files: 
+Starting at line 100 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 101 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+					outFile.write(ptrack.getItems().get(item).getTrack().getArtists().get(artist).getUri()+"\t");
+=====================================================================
+Found a 1 line (28 tokens) duplication in the following files: 
+Starting at line 104 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 105 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+				outFile.write(ptrack.getItems().get(item).getTrack().getArtists().get(0).getUri()+"\t");
+=====================================================================
+Found a 3 line (28 tokens) duplication in the following files: 
+Starting at line 85 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\service\HttpService.java
+Starting at line 93 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\service\HttpService.java
+
+                  if(catgories.getCategories().getNext() == null || catgories.getCategories().getNext().length() == 0 ){
+          		for(int item =0;item<catgories.getCategories().getItems().size();item++){
+          			 SimpleCategory simpleCategory1 = new SimpleCategory();
+=====================================================================
+Found a 2 line (27 tokens) duplication in the following files: 
+Starting at line 150 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+Starting at line 155 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+	    outFile.write(categoryPlaylist.getPlaylists().getItems().get(item).getUri()+"\t");
+	    outFile.write(categoryPlaylist.getPlaylists().getItems().get(item).getId()+"\t");
+=====================================================================
+Found a 2 line (27 tokens) duplication in the following files: 
+Starting at line 151 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+Starting at line 154 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+	    outFile.write(categoryPlaylist.getPlaylists().getItems().get(item).getId()+"\t");
+	    outFile.write(categoryPlaylist.getPlaylists().getItems().get(item).getName()+"\t");
+=====================================================================
+Found a 11 line (27 tokens) duplication in the following files: 
+Starting at line 6 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Followers.java
+Starting at line 14 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Page.java
+Starting at line 6 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\PlaylistTracksInformation.java
+
+  private int total;
+
+  public String getHref() {
+    return href;
+  }
+
+  public void setHref(String href) {
+    this.href = href;
+  }
+
+  public int getTotal() {
+=====================================================================
+Found a 2 line (27 tokens) duplication in the following files: 
+Starting at line 95 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 100 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 104 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 112 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+			outFile.write(ptrack.getItems().get(item).getTrack().getUri()+"\t");
+			outFile.write(ptrack.getItems().get(item).getTrack().getName()+"\t");
+=====================================================================
+Found a 9 line (26 tokens) duplication in the following files: 
+Starting at line 50 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\EntriesTracks.java
+Starting at line 30 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 26 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 77 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+Starting at line 33 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+	}
+	
+	public ExternalUrls getExternalUrls() {
+		return externalUrls;
+	}
+	public void setExternalUrls(ExternalUrls externalUrls) {
+		this.externalUrls = externalUrls;
+	}
+	public String getId() {
+=====================================================================
+Found a 8 line (26 tokens) duplication in the following files: 
+Starting at line 12 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Icons.java
+Starting at line 15 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Image.java
+
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public Integer getWidth() {
+=====================================================================
+Found a 2 line (26 tokens) duplication in the following files: 
+Starting at line 99 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 103 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+				for(int artist =0; artist<ptrack.getItems().get(item).getTrack().getArtists().size();artist++){
+					outFile.write(ptrack.getItems().get(item).getTrack().getArtists().get(artist).getUri()+"\t");
+=====================================================================
+Found a 2 line (26 tokens) duplication in the following files: 
+Starting at line 89 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\service\HttpService.java
+Starting at line 97 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\service\HttpService.java
+
+          			 simpleCategory1.setName(catgories.getCategories().getItems().get(item).getName());
+          			list.add(simpleCategory1);
+=====================================================================
+Found a 5 line (25 tokens) duplication in the following files: 
+Starting at line 26 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistDetailsClient.java
+Starting at line 32 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+
+public class PlaylistDetailsClient implements SpotifyService {
+	static HttpClient httpclient;
+	static ClientCredentials credsa = new ClientCredentials();
+	static AWSUtil awsUtil = new AWSUtil();
+	static String dateString;
+=====================================================================
+Found a 7 line (25 tokens) duplication in the following files: 
+Starting at line 90 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\PlaylistTrackClient.java
+Starting at line 37 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlayListDetails.java
+Starting at line 37 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+				Thread.sleep(5);
+				try{
+					
+					URI uri = new URI(purl);
+		            HttpGet httpGet = new HttpGet(uri); 
+		            boolean nextPage = false;
+		            do{
+=====================================================================
+Found a 8 line (25 tokens) duplication in the following files: 
+Starting at line 17 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\Charts.java
+Starting at line 89 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public String getDate() {
+=====================================================================
+Found a 9 line (25 tokens) duplication in the following files: 
+Starting at line 50 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\EntriesTracks.java
+Starting at line 37 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 30 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 26 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 77 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+Starting at line 33 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+	}
+	
+	public ExternalUrls getExternalUrls() {
+		return externalUrls;
+	}
+	public void setExternalUrls(ExternalUrls externalUrls) {
+		this.externalUrls = externalUrls;
+	}
+	public String getId() {
+=====================================================================
+Found a 7 line (25 tokens) duplication in the following files: 
+Starting at line 52 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\EntriesTracks.java
+Starting at line 11 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+
+	public ExternalUrls getExternalUrls() {
+		return externalUrls;
+	}
+	public void setExternalUrls(ExternalUrls externalUrls) {
+		this.externalUrls = externalUrls;
+	}
+	public String getId() {
+=====================================================================
+Found a 8 line (25 tokens) duplication in the following files: 
+Starting at line 57 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\charts\model\EntriesTracks.java
+Starting at line 61 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 46 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 42 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 49 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\User.java
+
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+=====================================================================
+Found a 10 line (25 tokens) duplication in the following files: 
+Starting at line 14 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Followers.java
+Starting at line 62 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Page.java
+Starting at line 16 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\PageCharts.java
+Starting at line 14 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\PlaylistTracksInformation.java
+
+  }
+
+  public int getTotal() {
+    return total;
+  }
+
+  public void setTotal(int total) {
+    this.total = total;
+  }
+}
+=====================================================================
+Found a 11 line (25 tokens) duplication in the following files: 
+Starting at line 85 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 62 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleAlbum.java
+Starting at line 33 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleArtist.java
+Starting at line 23 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimpleCategory.java
+Starting at line 58 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+Starting at line 101 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Track.java
+
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public SpotifyEntityType getType() {
+=====================================================================
+Found a 11 line (25 tokens) duplication in the following files: 
+Starting at line 109 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\Playlist.java
+Starting at line 66 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\model\SimplePlaylist.java
+
+  }
+
+  public boolean isPublicAccess() {
+    return publicAccess;
+  }
+
+  public void setPublicAccess(boolean publicAccess) {
+    this.publicAccess = publicAccess;
+  }
+
+  public Page<PlaylistTrack> getTracks() {
+=====================================================================
+Found a 1 line (25 tokens) duplication in the following files: 
+Starting at line 100 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 105 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+					outFile.write(ptrack.getItems().get(item).getTrack().getArtists().get(artist).getUri()+"\t");
+=====================================================================
+Found a 1 line (25 tokens) duplication in the following files: 
+Starting at line 101 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+Starting at line 104 of F:\cloud-workspace\umg-ers-analytics\src\main\java\com\umg\ers\analytics\spotify\playlist\PlaylistTracks.java
+
+					outFile.write(ptrack.getItems().get(item).getTrack().getArtists().get(artist).getName()+"\t");
